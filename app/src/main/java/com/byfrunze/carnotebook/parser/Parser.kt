@@ -1,56 +1,58 @@
 package com.byfrunze.carnotebook.parser
 
 import android.util.Log
-import com.byfrunze.carnotebook.Mark
-import com.byfrunze.carnotebook.Model
+import com.byfrunze.carnotebook.models.Brand
+import com.byfrunze.carnotebook.models.Model
+import io.realm.Realm
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 
 object Parser {
 
-
-    //        fun getAllBrands(): ArrayList<String> {
-//            val parserConfig = Jsoup.connect("https://www.avtovzglyad.ru/brand/")
-//                .userAgent("Chrome/4.0.249.0 Safari/532.5")
-//                .referrer("http://www.google.com")
-//                .get()
-//            val parseBrand = parserConfig.getElementsByClass("item")
-//
-//            val arrayOfBrand = ArrayList<String>()
-//            for (brand: Element in parseBrand) {
-//                arrayOfBrand.add(brand.text())
-//                Log.i("WEB", brand.select("a").attr("href"))
-//            }
-//            return arrayOfBrand
-//
-//        }
-
-    private const val URL = "https://www.avtovzglyad.ru/brand/"
+    private val URL = "https://www.avtovzglyad.ru/brand/"
 
     private val parserBrandConfig = Jsoup.connect("https://carobka.ru/cars/")
         .userAgent("Chrome/4.0.249.0 Safari/532.5")
         .referrer("http://www.google.com")
         .get()
 
+    fun getAllBrands(): ArrayList<Brand> {
 
-    fun getAllBrands(): ArrayList<Mark> {
-        val arrayOfMark = ArrayList<Mark>()
-        val parseMarks = parserBrandConfig.getElementsByClass("item-mark")
 
-        for (mark: Element in parseMarks) {
-            val logo = mark.select("img").attr("src")
-            val name = mark.select("span").text()
-            arrayOfMark.add(
-                Mark(
+        val arrayOfBrand = ArrayList<Brand>()
+        val parseBrands = parserBrandConfig.getElementsByClass("item-mark")
+
+        Log.i("SITE", "$parseBrands")
+        for (brand: Element in parseBrands) {
+            val logo = brand.select("img").attr("src")
+
+            val name = brand.select("span").text()
+
+            if (name.toLowerCase() == "камаз" ||
+                name.toLowerCase() == "htm" ||
+                name.toLowerCase() == "man"
+
+            ) continue
+            val site = when ("$URL${name.toLowerCase()}") {
+                "${URL}geely" -> "${URL}gelly"
+                "${URL}газ" -> "${URL}gaz"
+                "${URL}lada" -> "${URL}vaz"
+                "${URL}land rover" -> "${URL}land_rover"
+                "${URL}mercedes" -> "${URL}mercedes-benz"
+                else -> "${URL}${name.toLowerCase()}"
+            }
+
+            Log.i("BRAND", "$site")
+            arrayOfBrand.add(
+                Brand(
                     logo = logo,
                     name = name,
-                    site = "$URL${name.toLowerCase()}"
+                    site = site
                 )
             )
         }
-
-        return arrayOfMark
+        return arrayOfBrand
     }
 
     fun getAllModel(site: String): ArrayList<Model> {
@@ -62,10 +64,10 @@ object Parser {
         val arrayOfModels = ArrayList<Model>()
 
         val parseModels = parserModelConfig.getElementsByClass("item")
-        for (mark: Element in parseModels) {
-            val logo = mark.select("div").attr("style").removePrefix("background-image: url('")
+        for (brand: Element in parseModels) {
+            val logo = brand.select("div").attr("style").removePrefix("background-image: url('")
                 .removeSuffix("')")
-            val name = mark.getElementsByClass("name").text()
+            val name = brand.getElementsByClass("name").text()
             Log.i("WEB", logo)
             arrayOfModels.add(
                 Model(
