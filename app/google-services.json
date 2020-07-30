@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "103408025620",
+    "firebase_url": "https://car-notebook-708dc.firebaseio.com",
+    "project_id": "car-notebook-708dc",
+    "storage_bucket": "car-notebook-708dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103408025620:android:0dd114bfa609900d4a2701",
+        "android_client_info": {
+          "package_name": "com.byfrunze.carnotebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "103408025620-23g2agb438fq1hdmj1gbbbq8k8ohveq8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXFE17xzJKyuCtFF74NpUkDgJFjIp6NV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "103408025620-23g2agb438fq1hdmj1gbbbq8k8ohveq8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
